@@ -1,0 +1,10 @@
+{
+  "name": "tresorhunt",
+  "version": "1.0.0",
+  "description": "Tresor Hunt — Real-world scavenger hunt platform",
+  "private": true,
+  "dependencies": {
+    "@supabase/supabase-js": "^2.39.0",
+    "resend": "^3.2.0"
+  }
+}
