@@ -18,11 +18,11 @@ A branded landing page collecting email + city/region signups before the platfor
 - **Email:** Resend.com — sender: hello@tresorhunt.com
 - **Serverless:** Netlify Functions (subscribe.js, verify.js)
 
-## Supabase Table: waitlist
+## Supabase Table: landing_waitlist
 ```sql
 id          uuid primary key default gen_random_uuid()
 email       text unique not null
-city        text
+zipcode     bigint
 verified    boolean default false
 token       text
 created_at  timestamptz default now()

@@ -11,10 +11,15 @@ form.addEventListener('submit', async (e) => {
   e.preventDefault();
 
   const email = document.getElementById('email').value.trim();
-  const city = document.getElementById('city').value.trim();
+  const zipcode = document.getElementById('zipcode').value.trim();
 
-  if (!email || !city) {
-    showError('Please fill in both your email and city.');
+  if (!email || !zipcode) {
+    showError('Please fill in both your email and zip code.');
+    return;
+  }
+
+  if (!/^\d{5}$/.test(zipcode)) {
+    showError('Please enter a valid 5-digit zip code.');
     return;
   }
 
@@ -25,7 +30,7 @@ form.addEventListener('submit', async (e) => {
     const res = await fetch('/.netlify/functions/subscribe', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, city }),
+      body: JSON.stringify({ email, zipcode }),
     });
 
     const data = await res.json();

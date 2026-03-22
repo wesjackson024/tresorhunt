@@ -7,15 +7,19 @@ exports.handler = async (event) => {
     return { statusCode: 405, body: JSON.stringify({ message: 'Method not allowed' }) };
   }
 
-  let email, city;
+  let email, zipcode;
   try {
-    ({ email, city } = JSON.parse(event.body));
+    ({ email, zipcode } = JSON.parse(event.body));
   } catch {
     return { statusCode: 400, body: JSON.stringify({ message: 'Invalid request body' }) };
   }
 
-  if (!email || !city) {
-    return { statusCode: 400, body: JSON.stringify({ message: 'Email and city are required' }) };
+  if (!email || !zipcode) {
+    return { statusCode: 400, body: JSON.stringify({ message: 'Email and zip code are required' }) };
+  }
+
+  if (!/^\d{5}$/.test(String(zipcode))) {
+    return { statusCode: 400, body: JSON.stringify({ message: 'Please enter a valid 5-digit zip code' }) };
   }
 
   // Basic email validation
@@ -35,8 +39,8 @@ exports.handler = async (event) => {
 
   // Insert into waitlist (ignore if email already exists)
   const { error: dbError } = await supabase
-    .from('waitlist')
-    .upsert({ email, city, token, verified: false }, { onConflict: 'email', ignoreDuplicates: false });
+    .from('landing_waitlist')
+    .upsert({ email, zipcode: parseInt(zipcode), token, verified: false }, { onConflict: 'email', ignoreDuplicates: false });
 
   if (dbError) {
     console.error('Supabase error:', dbError);
@@ -74,7 +78,7 @@ exports.handler = async (event) => {
                   <p style="font-size:2rem;margin:0 0 16px;">✦</p>
                   <h1 style="color:#FFD93D;font-size:1.5rem;font-weight:900;letter-spacing:1px;margin:0 0 12px;">You're almost in.</h1>
                   <p style="color:rgba(232,232,240,0.7);font-size:1rem;line-height:1.6;margin:0 0 32px;">
-                    Click below to confirm your spot on the waitlist. We'll let you know the moment we launch in <strong style="color:#FFD93D;">${city}</strong>.
+                    Click below to confirm your spot on the waitlist. We'll let you know the moment we launch near zip code <strong style="color:#FFD93D;">${zipcode}</strong>.
                   </p>
                   <a href="${verifyUrl}" style="display:inline-block;background:#FFD93D;color:#0d0d1a;text-decoration:none;font-weight:900;font-size:1rem;letter-spacing:2px;padding:16px 36px;border-radius:10px;">
                     CONFIRM MY SPOT

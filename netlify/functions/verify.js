@@ -13,7 +13,7 @@ exports.handler = async (event) => {
   );
 
   const { data, error } = await supabase
-    .from('waitlist')
+    .from('landing_waitlist')
     .update({ verified: true, token: null })
     .eq('token', token)
     .select()
