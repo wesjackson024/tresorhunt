@@ -51,7 +51,7 @@ exports.handler = async (event) => {
   const verifyUrl = `https://tresorhunt.com/.netlify/functions/verify?token=${token}`;
 
   const { error: emailError } = await resend.emails.send({
-    from: 'Tresor Hunt <hello@tresorhunt.com>',
+    from: 'Tresor Hunt <hello@contact.tresorhunt.com>',
     to: email,
     subject: 'Confirm your spot on the Tresor Hunt waitlist ✦',
     html: `
