@@ -23,7 +23,7 @@ exports.handler = async (event) => {
     return redirect('/?verified=invalid');
   }
 
-  return redirect('/?verified=true');
+  return redirect('/confirmed.html');
 };
 
 function redirect(url) {
